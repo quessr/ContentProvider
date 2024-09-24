@@ -5,12 +5,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.os.Build
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -21,11 +23,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var contactRequestLauncher: ActivityResultLauncher<Intent>
     private lateinit var calendarRequestLauncher: ActivityResultLauncher<Intent>
 
+    private lateinit var contentResolverHelper: ContentResolverHelper
+
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        contentResolverHelper = ContentResolverHelper(this)
+
+//        contentResolverHelper.insertItem("Sample Photo", "This is a sample photo.")
+
+        contentResolverHelper.getAllItems()
 
 //        val status = ContextCompat.checkSelfPermission(this, "android.permission.READ_CONTACTS")
 //        if (status == PackageManager.PERMISSION_GRANTED) {
